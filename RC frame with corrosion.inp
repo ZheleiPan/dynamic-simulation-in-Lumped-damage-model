@@ -1,0 +1,505 @@
+*HEADING
+example for RC-Frame by corrosion
+*NODE
+***********************************************
+1,0.0,0.0
+2,0.0,215.0
+3,0.0,430.0
+4,250.0,0.0
+5,250.0,215.0
+6,250.0,430.0
+***********************************************
+*NSET,NSET=Support
+1,4
+***********************************************
+*NSET,NSET=nodes
+1,2,3,4,5,6
+***********************************************
+**
+*USER ELEMENT,NODES=2,UNSYMM,TYPE=U1,COORDINATES=2,I PROPERTIES=12,PROPERTIES=69,VARIABLES=24
+1,2,6
+*ELEMENT,TYPE=U1
+1,1,2
+2,2,3
+3,4,5
+4,5,6
+5,2,5
+6,3,6
+***********************************************
+***********************************************
+**    Props(19)= eu Honestad Behavior = 0.003 or 0.004
+***********************************************
+*ELSET,ELSET=Column
+1,2,3,4
+*ELSET,ELSET=beam
+5,6
+***********************************************
+*UEL PROPERTY,ELSET=Column
+0.177E-05,0.177E-05,0.148E-06,0.739E-01,0.739E-01,0.,0.,0.,
+0.,0.177E-05,0.177E-05,17.5,20.0,1.0,200.0,0.002,
+0.003,1.0,5620,6000,0.00206,0.0032,0.01,5620,
+2.356194490,2.75,2.356194490,2.75,0.,0.,0.0,0.0,
+0.0,0.0,0.0,0.0,0.0,0.0,0.8,2.0,
+2.0,0.0,1.85,1.85,10.0,0.2962,250000.0,0.009,
+2.356194490,2.75,2.356194490,2.75,0.,0.,0.0,0.0,
+0.0,0.0,0.0,0.0,0.0,0.0,0.8,1.,
+1.0,0.7,0.87,0.4,0.508, 5, 5, 2,
+ 3, 6, 2, 4, 1, 1, 1, 1,
+ 1 
+**
+**
+***********************************************
+**    Props(19)= eu Honestad Behavior = 0.003 or 0.004
+***********************************************
+*UEL PROPERTY,ELSET=beam
+0.177E-05,0.177E-05,0.148E-06,0.739E-01,0.739E-01,0.,0.,0.,
+0.,0.177E-05,0.177E-05,15.0,20.0,1.0,200.0,0.002,
+0.003,1.0,5620,6000,0.00206,0.0032,0.01,5620,
+2.356194490,2.75,2.356194490,2.75,0.,0.,0.0,0.0,
+0.0,0.0,0.0,0.0,0.0,0.0,0.8,2.0,
+2.0,0.0,1.85,1.85,13.0,2.317,250000.0,0.009,
+2.356194490,2.75,2.356194490,2.75,0.,0.,0.0,0.0,
+0.0,0.0,0.0,0.0,0.0,0.0,0.8,1.,
+1.0,0.7,0.87,0.4,0.508, 5, 5, 2,
+ 3, 6, 2, 4, 1, 1, 1, 1,
+ 1    
+***********************************************
+***********************************************
+*BOUNDARY
+***********************************************
+Support,1,1
+Support,2,2
+Support,6,6
+**
+***********************************************
+*AMPLITUDE,VALUE=RELATIVE,INPUT=Earthquake_ABAQUS_1.amp,NAME=EQ
+***********************************************
+***********************************************
+**STEP 1
+*STEP
+*STATIC
+1.,5.0,5.0E-5,1.0
+***********************************************
+** The Cloads are Ton-f
+***********************************************
+*CLOAD
+2,2,-1.2706
+3,2,-1.1803
+5,2,-1.2706
+6,2,-1.1803
+*EL PRINT, FREQ=1
+SDV
+*NODE PRINT, FREQ=1
+U,
+RF
+*EL FILE, FREQ=1
+SDV
+*NODE FILE, FREQ=1
+U,
+RF
+*RESTART,WRITE,FREQUENCY=1
+*OUTPUT,HISTORY,FREQUENCY=1
+*NODE OUTPUT,NSET=nodes
+U
+RF
+*END STEP
+***********************************************
+**STEP 2      CORROSION
+*STEP,INC=1000000000
+*STATIC
+100000.,100000000,5.0E-5,100000.0
+*BOUNDARY
+1,1,1,0.0
+*EL PRINT, FREQ=5
+SDV
+*NODE PRINT, FREQ=100
+U,
+RF
+*EL FILE, FREQ=100
+SDV
+*NODE FILE, FREQ=100
+U,
+RF
+*RESTART,WRITE,FREQUENCY=100
+*OUTPUT,HISTORY,FREQUENCY=100
+*NODE OUTPUT,NSET=nodes
+U
+RF
+*END STEP
+***********************************************
+**STEP 3      CORROSION
+*STEP,INC=1000000000
+*STATIC
+100000.,100000000,5.0E-5,100000.0
+*BOUNDARY
+1,1,1,0.0
+*EL PRINT, FREQ=5
+SDV
+*NODE PRINT, FREQ=100
+U,
+RF
+*EL FILE, FREQ=100
+SDV
+*NODE FILE, FREQ=100
+U,
+RF
+*RESTART,WRITE,FREQUENCY=100
+*OUTPUT,HISTORY,FREQUENCY=100
+*NODE OUTPUT,NSET=nodes
+U
+RF
+*END STEP
+***********************************************
+**STEP 4      CORROSION
+*STEP,INC=1000000000
+*STATIC
+100000.,100000000,5.0E-5,100000.0
+*BOUNDARY
+1,1,1,0.0
+*EL PRINT, FREQ=5
+SDV
+*NODE PRINT, FREQ=100
+U,
+RF
+*EL FILE, FREQ=100
+SDV
+*NODE FILE, FREQ=100
+U,
+RF
+*RESTART,WRITE,FREQUENCY=100
+*OUTPUT,HISTORY,FREQUENCY=100
+*NODE OUTPUT,NSET=nodes
+U
+RF
+*END STEP
+***********************************************
+**STEP 5      DYNAMIC
+*STEP,INC=10000
+*DYNAMIC,haftol=3
+0.02,32.0,1.0E-9,0.02
+*BOUNDARY,op=new,TYPE=ACCELERATION,AMPLITUDE=EQ
+Support,1,1,0.05
+*BOUNDARY,op=new
+Support,2,2
+Support,6,6
+*EL PRINT, FREQ=1
+SDV
+*NODE PRINT, FREQ=1
+A,
+V,
+U,
+RF
+*EL FILE, FREQ=1
+SDV
+*NODE FILE, FREQ=1
+A,
+V,
+U,
+RF
+*RESTART,WRITE,FREQUENCY=1
+*Output, field, variable=PRESELECT, FREQUENCY=1
+*OUTPUT,HISTORY, variable=PRESELECT, FREQUENCY=1
+*NODE OUTPUT,NSET=nodes
+A,
+V,
+U,
+RF
+*END STEP
+*********************************************
+**STEP 6      DYNAMIC
+*STEP,INC=10000
+*DYNAMIC,haftol=3
+0.02,32.0,1.0E-9,0.02
+*BOUNDARY,op=new,TYPE=ACCELERATION,AMPLITUDE=EQ
+Support,1,1,0.1
+*BOUNDARY,op=new
+Support,2,2
+Support,6,6
+*EL PRINT, FREQ=1
+SDV
+*NODE PRINT, FREQ=1
+A,
+V,
+U,
+RF
+*EL FILE, FREQ=1
+SDV
+*NODE FILE, FREQ=1
+A,
+V,
+U,
+RF
+*RESTART,WRITE,FREQUENCY=1
+*Output, field, variable=PRESELECT, FREQUENCY=1
+*OUTPUT,HISTORY, variable=PRESELECT, FREQUENCY=1
+*NODE OUTPUT,NSET=nodes
+A,
+V,
+U,
+RF
+*END STEP
+*********************************************
+**STEP 7      DYNAMIC
+*STEP,INC=10000
+*DYNAMIC,haftol=3
+0.02,32.0,1.0E-9,0.02
+*BOUNDARY,op=new,TYPE=ACCELERATION,AMPLITUDE=EQ
+Support,1,1,0.15
+*BOUNDARY,op=new
+Support,2,2
+Support,6,6
+*EL PRINT, FREQ=1
+SDV
+*NODE PRINT, FREQ=1
+A,
+V,
+U,
+RF
+*EL FILE, FREQ=1
+SDV
+*NODE FILE, FREQ=1
+A,
+V,
+U,
+RF
+*RESTART,WRITE,FREQUENCY=1
+*Output, field, variable=PRESELECT, FREQUENCY=1
+*OUTPUT,HISTORY, variable=PRESELECT, FREQUENCY=1
+*NODE OUTPUT,NSET=nodes
+A,
+V,
+U,
+RF
+*END STEP
+*********************************************
+**STEP 8      DYNAMIC
+*STEP,INC=10000
+*DYNAMIC,haftol=3
+0.02,32.0,1.0E-9,0.02
+*BOUNDARY,op=new,TYPE=ACCELERATION,AMPLITUDE=EQ
+Support,1,1,0.2
+*BOUNDARY,op=new
+Support,2,2
+Support,6,6
+*EL PRINT, FREQ=1
+SDV
+*NODE PRINT, FREQ=1
+A,
+V,
+U,
+RF
+*EL FILE, FREQ=1
+SDV
+*NODE FILE, FREQ=1
+A,
+V,
+U,
+RF
+*RESTART,WRITE,FREQUENCY=1
+*Output, field, variable=PRESELECT, FREQUENCY=1
+*OUTPUT,HISTORY, variable=PRESELECT, FREQUENCY=1
+*NODE OUTPUT,NSET=nodes
+A,
+V,
+U,
+RF
+*END STEP
+*********************************************
+**STEP 9      DYNAMIC
+*STEP,INC=10000
+*DYNAMIC,haftol=3
+0.02,32.0,1.0E-9,0.02
+*BOUNDARY,op=new,TYPE=ACCELERATION,AMPLITUDE=EQ
+Support,1,1,0.25
+*BOUNDARY,op=new
+Support,2,2
+Support,6,6
+*EL PRINT, FREQ=1
+SDV
+*NODE PRINT, FREQ=1
+A,
+V,
+U,
+RF
+*EL FILE, FREQ=1
+SDV
+*NODE FILE, FREQ=1
+A,
+V,
+U,
+RF
+*RESTART,WRITE,FREQUENCY=1
+*Output, field, variable=PRESELECT, FREQUENCY=1
+*OUTPUT,HISTORY, variable=PRESELECT, FREQUENCY=1
+*NODE OUTPUT,NSET=nodes
+A,
+V,
+U,
+RF
+*END STEP
+*********************************************
+**STEP 10      DYNAMIC
+*STEP,INC=10000
+*DYNAMIC,haftol=3
+0.02,32.0,1.0E-9,0.02
+*BOUNDARY,op=new,TYPE=ACCELERATION,AMPLITUDE=EQ
+Support,1,1,0.3
+*BOUNDARY,op=new
+Support,2,2
+Support,6,6
+*EL PRINT, FREQ=1
+SDV
+*NODE PRINT, FREQ=1
+A,
+V,
+U,
+RF
+*EL FILE, FREQ=1
+SDV
+*NODE FILE, FREQ=1
+A,
+V,
+U,
+RF
+*RESTART,WRITE,FREQUENCY=1
+*Output, field, variable=PRESELECT, FREQUENCY=1
+*OUTPUT,HISTORY, variable=PRESELECT, FREQUENCY=1
+*NODE OUTPUT,NSET=nodes
+A,
+V,
+U,
+RF
+*END STEP
+*********************************************
+**STEP 11      DYNAMIC
+*STEP,INC=10000
+*DYNAMIC,haftol=3
+0.02,32.0,1.0E-9,0.02
+*BOUNDARY,op=new,TYPE=ACCELERATION,AMPLITUDE=EQ
+Support,1,1,0.35
+*BOUNDARY,op=new
+Support,2,2
+Support,6,6
+*EL PRINT, FREQ=1
+SDV
+*NODE PRINT, FREQ=1
+A,
+V,
+U,
+RF
+*EL FILE, FREQ=1
+SDV
+*NODE FILE, FREQ=1
+A,
+V,
+U,
+RF
+*RESTART,WRITE,FREQUENCY=1
+*Output, field, variable=PRESELECT, FREQUENCY=1
+*OUTPUT,HISTORY, variable=PRESELECT, FREQUENCY=1
+*NODE OUTPUT,NSET=nodes
+A,
+V,
+U,
+RF
+*END STEP
+*********************************************
+**STEP 12      DYNAMIC
+*STEP,INC=10000
+*DYNAMIC,haftol=3
+0.02,32.0,1.0E-9,0.02
+*BOUNDARY,op=new,TYPE=ACCELERATION,AMPLITUDE=EQ
+Support,1,1,0.4
+*BOUNDARY,op=new
+Support,2,2
+Support,6,6
+*EL PRINT, FREQ=1
+SDV
+*NODE PRINT, FREQ=1
+A,
+V,
+U,
+RF
+*EL FILE, FREQ=1
+SDV
+*NODE FILE, FREQ=1
+A,
+V,
+U,
+RF
+*RESTART,WRITE,FREQUENCY=1
+*Output, field, variable=PRESELECT, FREQUENCY=1
+*OUTPUT,HISTORY, variable=PRESELECT, FREQUENCY=1
+*NODE OUTPUT,NSET=nodes
+A,
+V,
+U,
+RF
+*END STEP
+*********************************************
+**STEP 13      DYNAMIC
+*STEP,INC=10000
+*DYNAMIC,haftol=3
+0.02,32.0,1.0E-9,0.02
+*BOUNDARY,op=new,TYPE=ACCELERATION,AMPLITUDE=EQ
+Support,1,1,0.45
+*BOUNDARY,op=new
+Support,2,2
+Support,6,6
+*EL PRINT, FREQ=1
+SDV
+*NODE PRINT, FREQ=1
+A,
+V,
+U,
+RF
+*EL FILE, FREQ=1
+SDV
+*NODE FILE, FREQ=1
+A,
+V,
+U,
+RF
+*RESTART,WRITE,FREQUENCY=1
+*Output, field, variable=PRESELECT, FREQUENCY=1
+*OUTPUT,HISTORY, variable=PRESELECT, FREQUENCY=1
+*NODE OUTPUT,NSET=nodes
+A,
+V,
+U,
+RF
+*END STEP
+*********************************************
+**STEP 14      DYNAMIC
+*STEP,INC=10000
+*DYNAMIC,haftol=3
+0.02,32.0,1.0E-9,0.02
+*BOUNDARY,op=new,TYPE=ACCELERATION,AMPLITUDE=EQ
+Support,1,1,0.5
+*BOUNDARY,op=new
+Support,2,2
+Support,6,6
+*EL PRINT, FREQ=1
+SDV
+*NODE PRINT, FREQ=1
+A,
+V,
+U,
+RF
+*EL FILE, FREQ=1
+SDV
+*NODE FILE, FREQ=1
+A,
+V,
+U,
+RF
+*RESTART,WRITE,FREQUENCY=1
+*Output, field, variable=PRESELECT, FREQUENCY=1
+*OUTPUT,HISTORY, variable=PRESELECT, FREQUENCY=1
+*NODE OUTPUT,NSET=nodes
+A,
+V,
+U,
+RF
+*END STEP
+*********************************************
